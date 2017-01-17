@@ -2,16 +2,19 @@ package in.axeman.gradle.plugins.flexideps
 
 import org.gradle.api.initialization.Settings
 
-class DependencySpecification extends Script{
+class DependencySpecification extends Script {
 
     def compile(String path, String locator, String versionVariable) {
-        def dependencyDir = new File([projectDir.canonicalPath, path].join(File.separator))
-        dependencies.add new Dependency(settings, dependencyDir, locator, versionVariable)
+        add(path, locator, versionVariable, 'compile')
     }
 
     def testCompile(String path, String locator, String versionVariable) {
+        add(path, locator, versionVariable, 'testCompile')
+    }
+
+    private void add(String path, String locator, String versionVariable, String configuration) {
         def dependencyDir = new File([projectDir.canonicalPath, path].join(File.separator))
-        dependencies.add new Dependency(settings, dependencyDir, locator, versionVariable)
+        dependencies.add new Dependency(settings, dependencyDir, locator, versionVariable, configuration)
     }
 
     private Settings getSettings() {

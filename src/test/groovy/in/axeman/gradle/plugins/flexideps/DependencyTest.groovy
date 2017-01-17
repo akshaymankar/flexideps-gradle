@@ -17,7 +17,7 @@ class DependencyTest extends Specification {
     def "should include a project as its directory name"() {
         given:
         def file = new File("../../bar/foo")
-        def dependency = new Dependency(settings, file, "group:artifactId", "someVariable")
+        def dependency = new Dependency(settings, file, "group:artifactId", "someVariable", 'compile')
 
         when:
         dependency.include()
@@ -28,14 +28,14 @@ class DependencyTest extends Specification {
         1 * projectDescriptor.setProjectDir(file)
     }
 
-    def "should put itself as compile dependency on project"() {
+    def "should put itself as dependency of given configuration on project"() {
         given:
         def file              = new File("../../bar/foo")
         def rootProject       = Mock(Project)
         def dependencyProject = Mock(Project)
         def dependencyHandler = Mock(DependencyHandler)
 
-        def dependency = new Dependency(settings, file, "group:artifactId", "someVariable")
+        def dependency = new Dependency(settings, file, "group:artifactId", "someVariable", 'example_configuration')
 
         when:
         dependency.addDeps(rootProject)
@@ -44,6 +44,6 @@ class DependencyTest extends Specification {
         1 * rootProject.afterEvaluate(_) >> {Closure x -> x.call()}
         1 * rootProject.project(':foo') >> dependencyProject
         1 * rootProject.dependencies >> dependencyHandler
-        1 * dependencyHandler.add('compile', dependencyProject)
+        1 * dependencyHandler.add('example_configuration', dependencyProject)
     }
 }

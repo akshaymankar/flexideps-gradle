@@ -70,6 +70,7 @@ class FlexidepsPluginTest extends Specification {
 
         compileResult.task(":dependencies").outcome == TaskOutcome.SUCCESS
         expect compileResult.output, stringContainsInOrder(['compile', subProject1Description]*.toString())
+        expect compileResult.output, not(containsString(subProject2Description))
 
         testCompileResult.task(":dependencies").outcome == TaskOutcome.SUCCESS
         expect testCompileResult.output, stringContainsInOrder(['testCompile', subProject1Description, subProject2Description]*.toString())

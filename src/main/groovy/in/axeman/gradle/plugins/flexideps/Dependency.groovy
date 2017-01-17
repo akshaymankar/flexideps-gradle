@@ -8,8 +8,10 @@ class Dependency {
     private String path, locator, versionVariable
     private List<Dependency> dependencies
     private File projectDir
+    private String configuration
 
-    Dependency(Settings settings, File projectDir, String locator, String versionVariable) {
+    Dependency(Settings settings, File projectDir, String locator, String versionVariable, String configuration) {
+        this.configuration = configuration
         this.settings = settings
         this.projectDir =  projectDir
         this.locator = locator
@@ -28,7 +30,7 @@ class Dependency {
 
     def addDeps(Project rootProject) {
         rootProject.afterEvaluate {
-            rootProject.dependencies.add('compile', rootProject.project(":${name}"))
+            rootProject.dependencies.add(configuration, rootProject.project(":${name}"))
         }
     }
 
