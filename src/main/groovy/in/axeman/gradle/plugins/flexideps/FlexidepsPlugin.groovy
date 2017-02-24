@@ -9,19 +9,9 @@ class FlexidepsPlugin implements Plugin<Settings> {
     void apply(Settings settings) {
         def dependencies = DependencyFactory.getDependencies(settings, settings.rootDir)
         dependencies*.include()
-        println "*******************************"
-        println dependencies
-        println "*******************************"
         settings.gradle.beforeProject { Project project ->
             if(project.rootProject == project)
                 dependencies*.addDeps(project)
         }
-        //settings.gradle.beforeProject { Project project ->
-        //    println dependencies.size()
-        //    dependencies.findAll {
-        //        println "${it.projectDir} == ${project.rootDir}"
-        //        it.projectDir == project.rootDir
-        //    }*.addDeps(project)
-        //}
     }
 }

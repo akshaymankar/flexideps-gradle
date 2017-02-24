@@ -20,22 +20,24 @@ class Dependency {
         //this.dependencies = DependencyFactory.getDependencies(settings, projectDir)
     }
 
-    public File getProjectDir() {
-        this.projectDir
-    }
-
-    public getName() {
+    def getName() {
         projectDir.name
     }
 
     def addDeps(Project rootProject) {
         rootProject.afterEvaluate {
-            rootProject.dependencies.add(configuration, rootProject.project(":${name}"))
+            if(rootProject.hasProperty(versionVariable)) {
+                rootProject.dependencies.add(configuration, "${locator}:${rootProject.properties[versionVariable]}")
+            } else {
+                rootProject.dependencies.add(configuration, rootProject.project(":${name}"))
+            }
         }
     }
 
     def include() {
-        settings.include(":${name}")
-        settings.project(":${name}").projectDir = projectDir
+        if(!settings.hasProperty(versionVariable)) {
+            settings.include(":${name}")
+            settings.project(":${name}").projectDir = projectDir
+        }
     }
 }
