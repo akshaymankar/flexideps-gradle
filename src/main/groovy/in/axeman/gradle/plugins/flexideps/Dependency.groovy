@@ -1,8 +1,10 @@
 package in.axeman.gradle.plugins.flexideps
 
+import groovy.transform.EqualsAndHashCode
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
+@EqualsAndHashCode
 class Dependency {
     private Settings settings
     private String path, locator, versionVariable

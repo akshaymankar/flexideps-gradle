@@ -10,7 +10,7 @@ class DependencyFactory {
         if(flexidepsFile.exists()) {
             def compilerConfiguration = new CompilerConfiguration()
             compilerConfiguration.scriptBaseClass = DependencySpecification.class.name
-            def binding = new Binding(settings: settings, dependencies: [], projectDir: projectDir)
+            def binding = new Binding(settings: settings, projectDir: projectDir)
             def shell = new GroovyShell(this.classLoader, binding, compilerConfiguration)
             shell.evaluate(flexidepsFile)
             binding.dependencies
